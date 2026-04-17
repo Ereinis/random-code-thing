@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Code Dashboard</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; background:#0f172a; color:white; }
+.container { display:flex; justify-content:center; align-items:center; height:100vh; }
+.card { background:#1e293b; padding:30px; border-radius:12px; width:90%; max-width:400px; box-shadow:0 10px 25px rgba(0,0,0,0.5); }
+input, textarea, button { width:100%; padding:10px; margin-top:10px; border:none; border-radius:8px; }
+button { background:#38bdf8; color:black; font-weight:bold; cursor:pointer; }
+.hidden { display:none; }
+.dashboard { padding:20px; }
+.grid { display:grid; grid-template-columns:1fr; gap:20px; }
+@media(min-width:768px){ .grid { grid-template-columns:1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<div id="login" class="container">
+  <div class="card">
+    <h2>Enter Password</h2>
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<div id="dashboard" class="hidden dashboard">
+  <h1>Secret Code Dashboard</h1>
+  <div class="grid">
+    <div class="card">
+      <h3>Encoder (Text → Code)</h3>
+      <textarea id="encodeInput" placeholder="Enter text"></textarea>
+      <button onclick="encodeText()">Encode</button>
+      <textarea id="encodeOutput" placeholder="Result"></textarea>
+    </div>
+    <div class="card">
+      <h3>Decoder (Code → Text)</h3>
+      <textarea id="decodeInput" placeholder="Enter code"></textarea>
+      <button onclick="decodeText()">Decode</button>
+      <textarea id="decodeOutput" placeholder="Result"></textarea>
+    </div>
+    <div class="card">
+      <h3>translation thing or sum</h3>
+      <p>
+        _/\_ is A <br> |>> is B <br> < is C <br> |>) is D  <br> |=_ is E <br> |= is F <br> (_| is G <br> |=| is H <br> | is I <br>_| is J <br> |< is K <br> |_ is L <br> /\=/\ is M <br> /\=/ is N <br> (=) <br> is O <br> |> is P <br> O_ is Q <br> |)\ is R <br> $ is S <br> T is T <br> |_| is U <br> \=/ is V <br> \/=\/ is W <br> + is X <br>\/- is Y <br> -\_ is Z <br> //// = space bar
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+const PASSWORD = "ampermetristufflol"; // change this
+
+function login(){
+  const pass = document.getElementById("password").value;
+  if(pass === PASSWORD){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+  } else {
+    alert("Wrong password");
+  }
+}
+
+const map = {
+  "A":"_/\\_","B":"|>>","C":"<","D":"|>)","E":"|=_","F":"|=","G":"(_|","H":"|=|","I":"|","J":"_|","K":"|<","L":"|_","M":"/\\=/\\","N":"/\\=/","O":"(=)","P":"|>","Q":"O_","R":"|)\\","S":"$","T":"T","U":"|_|","V":"\\=/","W":"\\/=\\/","X":"+","Y":"\\/-","Z":"-\\_"," ":"////"
+};
+
+const reverseMap = {};
+for (let key in map) {
+  reverseMap[map[key]] = key;
+}
+
+function encodeText(){
+  let input = document.getElementById("encodeInput").value.toUpperCase();
+  let result = "";
+  for(let char of input){
+    result += (map[char] || char) + " ";
+  }
+  document.getElementById("encodeOutput").value = result.trim();
+}
+
+function decodeText(){
+  let input = document.getElementById("decodeInput").value.split(" ");
+  let result = "";
+  for(let code of input){
+    result += reverseMap[code] || "?";
+  }
+  document.getElementById("decodeOutput").value = result;
+}
+</script>
+
+</body>
+</html>
